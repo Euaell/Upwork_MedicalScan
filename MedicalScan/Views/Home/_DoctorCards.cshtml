@@ -1,0 +1,17 @@
+﻿@model System.Collections.Generic.IEnumerable<MedicalScan.ViewModel.DoctorViewModel>
+
+<div class="row">
+    @foreach (var doctor in Model)
+    {
+        <div class="col-md-4 col-sm-6">
+            <div class="card m-2">
+                <div class="card-header">
+                    @doctor.Name
+                </div>
+                <div class="card-body">
+                    <p>@String.Join(", ", doctor.Specialties)</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
