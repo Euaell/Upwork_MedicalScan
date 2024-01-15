@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MedicalScan.ViewModel.DoctorViewModel>
+
+@{
+    ViewBag.Title = "Doctors";
+}
+
+<div class="container">
+    <h2>Doctors</h2>
+
+    <div class="form-group">
+        @Html.Label("Filter by Specialty:")
+        @Html.DropDownList("SelectedSpecialty", (SelectList)ViewBag.Specialties, "All", htmlAttributes: new { @class = "form-control mb-2" })
+    </div>
+
+    <div id="doctors-container">
+        @Html.Partial("_DoctorCards", Model)
+    </div>
+</div>
+
+<script type="text/javascript">
+   document.addEventListener("DOMContentLoaded", function() {
+       const selectedSpecialtyDropdown = document.getElementById("SelectedSpecialty");
+   
+       selectedSpecialtyDropdown.addEventListener("change", function() {
+           const selectedSpecialty = this.value;
+   
+           fetch("/Home/FilterDoctors?selectedSpecialty=" + selectedSpecialty)
+               .then(response => {
+                   return response.text() // Assuming the controller action returns HTML
+               }) 
+               .then(data => {
+                   const doctorsContainer = document.getElementById("doctors-container");
+                   doctorsContainer.innerHTML = data;
+               })
+               .catch(error => {
+                   console.error(error);
+               });
+       });
+   });
+</script>
